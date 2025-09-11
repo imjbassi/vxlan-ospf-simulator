@@ -1,0 +1,5 @@
+
+Flask>=2.0
+pytest>=6.0
+networkx>=3.0
+
