@@ -47,9 +47,11 @@ class Fabric:
     """Represents a network fabric topology with nodes and links.
     
     Uses NetworkX for graph operations and maintains a registry of nodes.
+    Supports building spine-leaf topologies and querying topology properties.
     """
     
     def __init__(self):
+        """Initialize an empty fabric topology."""
         self.graph = nx.Graph()
         self.nodes: Dict[str, Node] = {}
 
@@ -75,6 +77,8 @@ class Fabric:
         
         Creates a Clos network where all spine nodes connect to all leaf nodes.
         Spines are named S1, S2, ... and leaves are named L1, L2, ...
+        Loopback IPs are assigned sequentially starting from 10.255.0.1.
+        VTEP IPs for leaves are assigned starting from 10.0.0.{spine_count+1}.
         
         Args:
             spines: Number of spine nodes to create (default: 2)
@@ -85,9 +89,11 @@ class Fabric:
         """
         # Deterministic IP assignment helpers
         def loopback_ip(i: int) -> str:
+            """Generate loopback IP for node index i."""
             return f"10.255.0.{i}"
         
         def vtep_ip(i: int) -> str:
+            """Generate VTEP IP for node index i."""
             return f"10.0.0.{i}"
 
         # Add spine nodes
@@ -121,6 +127,9 @@ class Fabric:
             
         Returns:
             List of neighbor node names
+            
+        Raises:
+            NetworkXError: If node_name is not in the graph
         """
         return list(self.graph.neighbors(node_name))
 
@@ -133,6 +142,9 @@ class Fabric:
             
         Returns:
             Link cost as an integer
+            
+        Raises:
+            KeyError: If the link does not exist
         """
         return self.graph[a][b]["cost"]
 
@@ -140,7 +152,12 @@ class Fabric:
         """Serialize the fabric topology to a dictionary.
         
         Returns:
-            Dictionary containing nodes and links with their attributes
+            Dictionary containing nodes and links with their attributes.
+            Format:
+                {
+                    "nodes": [{"name": str, "role": str, "loopback": str, "vtep_ip": str|None}, ...],
+                    "links": [{"a": str, "b": str, "cost": int}, ...]
+                }
         """
         return {
             "nodes": [
