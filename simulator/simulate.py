@@ -1,3 +1,4 @@
+```python
 from __future__ import annotations
 from typing import Dict, Optional, Any
 from . import topology, ospf, vxlan
@@ -109,7 +110,7 @@ def run_full_simulation(
         # Default VNI config: VNI 100 with all leaves, VNI 200 with a subset
         vni_config = {
             100: [f"leaf{i}" for i in range(1, num_leaves + 1)],
-            200: [f"leaf{i}" for i in range(1, num_leaves // 2 + 1)],
+            200: [f"leaf{i}" for i in range(1, max(1, num_leaves // 2) + 1)],
         }
 
     # 1. Build the fabric topology
@@ -153,3 +154,4 @@ def run_full_simulation(
 if __name__ == "__main__":
     import json
     print(json.dumps(simulate(), indent=2))
+```
