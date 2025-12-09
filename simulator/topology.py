@@ -50,9 +50,9 @@ class Fabric:
     Supports building spine-leaf topologies and querying topology properties.
     """
     
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize an empty fabric topology."""
-        self.graph = nx.Graph()
+        self.graph: nx.Graph = nx.Graph()
         self.nodes: Dict[str, Node] = {}
 
     def add_node(self, node: Node) -> None:
