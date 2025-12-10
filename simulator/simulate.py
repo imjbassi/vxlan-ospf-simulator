@@ -60,27 +60,30 @@ def simulate() -> Dict[str, Any]:
     # Generate a sample encapsulation if tunnels exist
     sample = None
     if tunnels:
-        a, b = tunnels[0]
-        va = overlay.vteps[a]
-        vb = overlay.vteps[b]
+        src_vtep, dst_vtep = tunnels[0]
+        src_vtep_obj = overlay.vteps[src_vtep]
+        dst_vtep_obj = overlay.vteps[dst_vtep]
         sample = overlay.encapsulate(
-            va, vb, 10010, payload_desc="L2 frame: MAC A -> MAC B"
+            src_vtep_obj, dst_vtep_obj, 10010, payload_desc="L2 frame: MAC A -> MAC B"
         )
 
     result = {
         "topology": fabric.to_dict(),
         "routes": {
-            n: {dst: {"nexthop": nh, "cost": c} for dst, (nh, c) in tbl.items()}
-            for n, tbl in rtab.items()
+            node_name: {
+                dst: {"nexthop": nexthop, "cost": cost}
+                for dst, (nexthop, cost) in route_table.items()
+            }
+            for node_name, route_table in rtab.items()
         },
         "vxlan": {
             "vnis": {
-                vid: {"name": v.name, "members": list(v.members)}
-                for vid, v in overlay.vnis.items()
+                vni_id: {"name": vni.name, "members": list(vni.members)}
+                for vni_id, vni in overlay.vnis.items()
             },
             "vteps": {
-                n: {"ip": v.ip, "vnis": list(v.vnis)}
-                for n, v in overlay.vteps.items()
+                vtep_name: {"ip": vtep.ip, "vnis": list(vtep.vnis)}
+                for vtep_name, vtep in overlay.vteps.items()
             },
             "tunnels_vni_10010": tunnels,
             "sample_encapsulation": sample,
@@ -143,7 +146,7 @@ def run_full_simulation(
             name: str(vtep.ip_address) for name, vtep in vteps.items()
         },
         "vxlan_vnis": {
-            vni_id: [m.name for m in vni.members]
+            vni_id: [member.name for member in vni.members]
             for vni_id, vni in vnis.items()
         },
         "vxlan_tunnels": tunnels,

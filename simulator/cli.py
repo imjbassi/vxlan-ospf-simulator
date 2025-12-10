@@ -26,11 +26,13 @@ def main():
         print(json.dumps(results, indent=2))
         print("\nSimulation complete. Run 'python -m simulator.api' to see the dashboard.")
         
+        return 0
+        
     except Exception as e:
         print(f"Error during simulation: {e}", file=sys.stderr)
-        sys.exit(1)
+        return 1
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
 ```
