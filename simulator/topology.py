@@ -129,7 +129,7 @@ class Fabric:
             List of neighbor node names
             
         Raises:
-            NetworkXError: If node_name is not in the graph
+            nx.NetworkXError: If node_name is not in the graph
         """
         return list(self.graph.neighbors(node_name))
 

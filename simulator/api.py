@@ -1,3 +1,4 @@
+```python
 import sys
 import os
 from flask import Flask, render_template_string, jsonify
@@ -17,15 +18,53 @@ HTML_TEMPLATE = """
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VXLAN+OSPF Simulator</title>
     <style>
-        body { font-family: sans-serif; margin: 2em; background: #f9f9f9; }
-        h1, h2 { color: #333; border-bottom: 2px solid #eee; padding-bottom: 5px; }
-        pre { background: #fff; border: 1px solid #ddd; padding: 1em; border-radius: 5px; white-space: pre-wrap; font-size: 14px; }
-        .container { display: grid; grid-template-columns: 1fr 1fr; gap: 2em; }
-        .col { min-width: 0; }
-        nav { margin-bottom: 2em; }
-        nav a { margin-right: 1em; text-decoration: none; color: #007bff; }
+        body { 
+            font-family: sans-serif; 
+            margin: 2em; 
+            background: #f9f9f9; 
+        }
+        h1, h2 { 
+            color: #333; 
+            border-bottom: 2px solid #eee; 
+            padding-bottom: 5px; 
+        }
+        pre { 
+            background: #fff; 
+            border: 1px solid #ddd; 
+            padding: 1em; 
+            border-radius: 5px; 
+            white-space: pre-wrap; 
+            word-wrap: break-word;
+            font-size: 14px; 
+            overflow-x: auto;
+        }
+        .container { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 2em; 
+        }
+        .col { 
+            min-width: 0; 
+        }
+        nav { 
+            margin-bottom: 2em; 
+        }
+        nav a { 
+            margin-right: 1em; 
+            text-decoration: none; 
+            color: #007bff; 
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
@@ -60,28 +99,37 @@ HTML_TEMPLATE = """
 </html>
 """
 
+
 @app.route("/")
 def dashboard():
-    """Renders the main dashboard."""
+    """Renders the main dashboard with simulation results."""
     return render_template_string(
         HTML_TEMPLATE,
-        topology=RESULTS.get("topology"),
-        routes=RESULTS.get("routes"),
-        vxlan=RESULTS.get("vxlan")
+        topology=RESULTS.get("topology", {}),
+        routes=RESULTS.get("routes", {}),
+        vxlan=RESULTS.get("vxlan", {})
     )
+
 
 @app.route("/api/topology")
 def api_topology():
-    return jsonify(RESULTS.get("topology"))
+    """Returns the network topology as JSON."""
+    return jsonify(RESULTS.get("topology", {}))
+
 
 @app.route("/api/routes")
 def api_routes():
-    return jsonify(RESULTS.get("routes"))
+    """Returns the routing tables as JSON."""
+    return jsonify(RESULTS.get("routes", {}))
+
 
 @app.route("/api/vxlan")
 def api_vxlan():
-    return jsonify(RESULTS.get("vxlan"))
+    """Returns the VXLAN configuration as JSON."""
+    return jsonify(RESULTS.get("vxlan", {}))
+
 
 if __name__ == "__main__":
     print("Starting Flask server at http://127.0.0.1:5000")
     app.run(debug=True)
+```
