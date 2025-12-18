@@ -22,14 +22,17 @@ def compute_spf_for_node(graph: nx.Graph, start_node: str) -> Dict[str, Tuple[st
     if start_node not in graph:
         return {}
     
+    # Compute shortest paths and costs using Dijkstra's algorithm
     paths = nx.single_source_dijkstra_path(graph, start_node, weight="cost")
     costs = nx.single_source_dijkstra_path_length(graph, start_node, weight="cost")
     
     routing_table = {}
     for dest, path in paths.items():
+        # Skip the source node itself
         if start_node == dest:
             continue
-        # Next hop is the second node in the path, or destination if directly connected
+        
+        # Determine next hop: second node in path for multi-hop, or destination if directly connected
         next_hop = path[1] if len(path) > 1 else dest
         routing_table[dest] = (next_hop, costs[dest])
     
