@@ -28,15 +28,15 @@ class VXLANOverlay:
         self.vnis: Dict[int, VNI] = {}
         self.vteps: Dict[str, VTEP] = {}
 
-    def add_vni(self, id: int, name: str) -> None:
+    def add_vni(self, vni_id: int, name: str) -> None:
         """Add a VNI to the overlay if it doesn't already exist.
         
         Args:
-            id: The VNI identifier
+            vni_id: The VNI identifier
             name: The VNI name
         """
-        if id not in self.vnis:
-            self.vnis[id] = VNI(id=id, name=name)
+        if vni_id not in self.vnis:
+            self.vnis[vni_id] = VNI(id=vni_id, name=name)
 
     def attach_vtep(self, node: str, ip: str, vnis: List[int]) -> None:
         """Attach a VTEP to the overlay and associate it with VNIs.
@@ -122,14 +122,14 @@ class VXLANOverlay:
         """
         return self.vteps.get(name)
 
-    def get_vni(self, id: int) -> Optional[VNI]:
+    def get_vni(self, vni_id: int) -> Optional[VNI]:
         """Retrieve a VNI by ID.
         
         Args:
-            id: The VNI identifier
+            vni_id: The VNI identifier
             
         Returns:
             The VNI object if found, None otherwise
         """
-        return self.vnis.get(id)
+        return self.vnis.get(vni_id)
 ```
