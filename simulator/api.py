@@ -22,14 +22,20 @@ HTML_TEMPLATE = """
     <title>VXLAN+OSPF Simulator</title>
     <style>
         body { 
-            font-family: sans-serif; 
-            margin: 2em; 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 2em; 
             background: #f9f9f9; 
+            color: #333;
         }
         h1, h2 { 
             color: #333; 
             border-bottom: 2px solid #eee; 
-            padding-bottom: 5px; 
+            padding-bottom: 5px;
+            margin-top: 0;
+        }
+        h1 {
+            margin-bottom: 0.5em;
         }
         pre { 
             background: #fff; 
@@ -40,6 +46,8 @@ HTML_TEMPLATE = """
             word-wrap: break-word;
             font-size: 14px; 
             overflow-x: auto;
+            line-height: 1.5;
+            font-family: 'Courier New', Courier, monospace;
         }
         .container { 
             display: grid; 
@@ -50,17 +58,23 @@ HTML_TEMPLATE = """
             min-width: 0; 
         }
         nav { 
-            margin-bottom: 2em; 
+            margin-bottom: 2em;
+            padding: 1em 0;
+            border-bottom: 1px solid #ddd;
         }
         nav a { 
             margin-right: 1em; 
             text-decoration: none; 
-            color: #007bff; 
+            color: #007bff;
+            font-weight: 500;
         }
         nav a:hover {
             text-decoration: underline;
         }
         @media (max-width: 768px) {
+            body {
+                padding: 1em;
+            }
             .container {
                 grid-template-columns: 1fr;
             }
@@ -131,5 +145,5 @@ def api_vxlan():
 
 if __name__ == "__main__":
     print("Starting Flask server at http://127.0.0.1:5000")
-    app.run(debug=True)
+    app.run(debug=True, host="127.0.0.1", port=5000)
 ```
