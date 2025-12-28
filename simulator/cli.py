@@ -16,6 +16,9 @@ def main():
     This function executes the network simulation and outputs the results
     in a formatted JSON structure. It also provides guidance on accessing
     the dashboard interface.
+    
+    Returns:
+        int: Exit code (0 for success, 1 for failure)
     """
     print("Running network simulation...")
     
@@ -30,6 +33,8 @@ def main():
         
     except Exception as e:
         print(f"Error during simulation: {e}", file=sys.stderr)
+        import traceback
+        traceback.print_exc(file=sys.stderr)
         return 1
 
 
