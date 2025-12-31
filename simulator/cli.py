@@ -1,7 +1,8 @@
 ```python
 import json
-import sys
 import os
+import sys
+import traceback
 
 # Add the project root to the Python path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -33,7 +34,6 @@ def main():
         
     except Exception as e:
         print(f"Error during simulation: {e}", file=sys.stderr)
-        import traceback
         traceback.print_exc(file=sys.stderr)
         return 1
 
