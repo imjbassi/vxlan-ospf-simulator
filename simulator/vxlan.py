@@ -52,11 +52,12 @@ class VXLANOverlay:
         if node not in self.vteps:
             self.vteps[node] = VTEP(name=node, ip=ip)
         
+        vtep = self.vteps[node]
         for vni_id in vnis:
             # Auto-create VNI if not present
             self.add_vni(vni_id, f"VNI-{vni_id}")
             self.vnis[vni_id].members.add(node)
-            self.vteps[node].vnis.add(vni_id)
+            vtep.vnis.add(vni_id)
 
     def tunnels_for_vni(self, vni_id: int) -> List[Tuple[str, str]]:
         """Returns all VTEP-to-VTEP tunnels for a given VNI.
