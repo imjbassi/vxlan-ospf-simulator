@@ -1,7 +1,7 @@
 ```python
 from __future__ import annotations
 from dataclasses import dataclass, field
-from typing import Dict, List, Set, Tuple, Optional
+from typing import Dict, List, Optional, Set, Tuple
 
 
 @dataclass
