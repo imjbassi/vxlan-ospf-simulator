@@ -59,7 +59,7 @@ class VXLANOverlay:
         
         Creates the VTEP if it doesn't exist, and automatically creates any
         VNIs that are not already present in the overlay. Updates the VTEP's
-        IP address if it already exists.
+        IP address and VNI associations if it already exists.
         
         Args:
             node: The VTEP node name
