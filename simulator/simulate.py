@@ -130,7 +130,7 @@ def run_full_simulation(
     
     # 5. Simulate a sample encapsulation
     example_encap = None
-    if tunnels.get(100) and len(tunnels[100]) > 0:
+    if tunnels.get(100) and tunnels[100]:
         # Find two VTEPs in VNI 100 to show an example
         vtep1_name = tunnels[100][0]["from"]
         vtep2_name = tunnels[100][0]["to"]
