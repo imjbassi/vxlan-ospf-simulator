@@ -116,19 +116,19 @@ def run_full_simulation(
             200: [f"leaf{i}" for i in range(1, max(2, (num_leaves // 2) + 1))],
         }
 
-    # 1. Build the fabric topology
+    # Build the fabric topology
     fabric = topology.Fabric(num_spines, num_leaves)
     
-    # 2. Run OSPF to compute routing tables
+    # Run OSPF to compute routing tables
     routing_tables = ospf.compute_routing_tables(fabric)
     
-    # 3. Set up the VXLAN overlay
+    # Set up the VXLAN overlay
     vteps, vnis = vxlan.setup_vxlan_overlay(fabric, vni_config)
     
-    # 4. Compute VXLAN tunnels based on underlay routes
+    # Compute VXLAN tunnels based on underlay routes
     tunnels = vxlan.compute_vxlan_tunnels(vnis, routing_tables)
     
-    # 5. Simulate a sample encapsulation
+    # Simulate a sample encapsulation
     example_encap = None
     if tunnels.get(100) and tunnels[100]:
         # Find two VTEPs in VNI 100 to show an example
