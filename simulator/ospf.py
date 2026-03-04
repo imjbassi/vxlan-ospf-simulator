@@ -51,8 +51,5 @@ def install_routes_for_all(graph: nx.Graph) -> Dict[str, Dict[str, Tuple[str, in
         Dictionary mapping each node to its routing table.
         Each routing table maps destination nodes to (next_hop, cost) tuples.
     """
-    all_routing_tables = {}
-    for node in graph.nodes:
-        all_routing_tables[node] = compute_spf_for_node(graph, node)
-    return all_routing_tables
+    return {node: compute_spf_for_node(graph, node) for node in graph.nodes}
 ```
