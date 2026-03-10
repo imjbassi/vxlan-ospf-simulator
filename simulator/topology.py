@@ -156,7 +156,7 @@ class Fabric:
             Format:
                 {
                     "nodes": [{"name": str, "role": str, "loopback": str, "vtep_ip": str|None}, ...],
-                    "links": [{"a": str, "b": str, "cost": int}, ...]
+                    "links": [{"a": str, "b": b, "cost": int}, ...]
                 }
         """
         return {
