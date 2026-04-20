@@ -87,29 +87,23 @@ class Fabric:
         Returns:
             Self for method chaining
         """
-        # Deterministic IP assignment helpers
-        def loopback_ip(i: int) -> str:
-            """Generate loopback IP for node index i."""
-            return f"10.255.0.{i}"
-        
-        def vtep_ip(i: int) -> str:
-            """Generate VTEP IP for node index i."""
-            return f"10.0.0.{i}"
-
         # Add spine nodes
         for i in range(1, spines + 1):
             name = f"S{i}"
-            self.add_node(Node(name=name, role="spine", loopback=loopback_ip(i)))
+            loopback = f"10.255.0.{i}"
+            self.add_node(Node(name=name, role="spine", loopback=loopback))
         
         # Add leaf nodes with VTEP IPs
         for i in range(1, leaves + 1):
             idx = i + spines
             name = f"L{i}"
+            loopback = f"10.255.0.{idx}"
+            vtep = f"10.0.0.{idx}"
             self.add_node(Node(
                 name=name,
                 role="leaf",
-                loopback=loopback_ip(idx),
-                vtep_ip=vtep_ip(idx)
+                loopback=loopback,
+                vtep_ip=vtep
             ))
         
         # Create full-mesh connectivity between spines and leaves
