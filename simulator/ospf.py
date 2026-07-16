@@ -1,4 +1,3 @@
-```python
 from __future__ import annotations
 from typing import TYPE_CHECKING, Dict, Tuple
 
@@ -52,4 +51,3 @@ def install_routes_for_all(graph: nx.Graph) -> Dict[str, Dict[str, Tuple[str, in
         Each routing table maps destination nodes to (next_hop, cost) tuples.
     """
     return {node: compute_spf_for_node(graph, node) for node in graph.nodes}
-```

@@ -1,4 +1,3 @@
-```python
 from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Set, Tuple
@@ -171,4 +170,3 @@ class VXLANOverlay:
             Sorted list of VNI IDs
         """
         return sorted(self.vnis.keys())
-```

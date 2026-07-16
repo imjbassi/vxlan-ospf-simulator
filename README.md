@@ -2,6 +2,14 @@
 
 A lightweight, self-contained Python project that **simulates OSPF routing** over a spine-leaf fabric and **models VXLAN overlays** with VTEPs and VNIs. No root privileges required and **no Mininet dependency** — this is a **logical simulator** for interview-ready demos.
 
+## Demo
+
+The web dashboard renders the spine-leaf fabric, per-node OSPF routing tables, and the VXLAN overlay live. Below, the fabric grows from 2×3 to 4×6 while OSPF recomputes shortest paths and VXLAN tunnels are re-enumerated:
+
+![VXLAN + OSPF simulator dashboard demo](docs/demo.gif)
+
+> The full-resolution screen recording is available at [`docs/demo.mp4`](docs/demo.mp4).
+
 ## Features
 
 - Build a small spine-leaf topology with configurable leaves and spines
@@ -33,13 +41,18 @@ python -m simulator.api
 
 ```
 simulator/
-  api.py           # Flask API and minimal dashboard
-  cli.py           # CLI runner
+  api.py           # Flask API and dashboard (SVG topology diagram)
+  cli.py           # CLI runner (argparse: --spines/--leaves/--vni/--json)
+  simulate.py      # Orchestrates fabric -> OSPF -> VXLAN and serializes results
   topology.py      # Nodes, Links, Fabric builder
-  ospf.py          # OSPF LSDB + SPF + route installation
-  vxlan.py         # VTEP, VNI, tunnel resolution
+  ospf.py          # SPF (Dijkstra) + route installation
+  vxlan.py         # VTEP, VNI, tunnel resolution, encapsulation
 tests/
   test_spf.py      # SPF algorithm tests
+  test_vxlan.py    # VXLAN overlay + end-to-end simulate() tests
+docs/
+  demo.gif         # Dashboard demo (embedded above)
+  demo.mp4         # Full-resolution screen recording
 README.md
 requirements.txt
 ```
@@ -67,10 +80,17 @@ requirements.txt
 
 ### CLI Simulation
 ```bash
-# Run default simulation
+# Run default simulation (2 spines, 3 leaves) with a readable summary
 python -m simulator.cli
 
-# View topology and routing tables
+# Custom fabric size
+python -m simulator.cli --spines 3 --leaves 5
+
+# Provision one or more VNIs (repeatable)
+python -m simulator.cli --vni 10010:customers-A --vni 10020:customers-B
+
+# Raw JSON output, or summary + JSON
+python -m simulator.cli --json
 python -m simulator.cli --verbose
 ```
 
@@ -80,9 +100,11 @@ python -m simulator.cli --verbose
 python -m simulator.api
 
 # Access endpoints:
-# GET /api/topology - View network topology
-# GET /api/routes - View routing tables
-# GET /api/vxlan - View VXLAN tunnels
+# GET /                          - HTML dashboard with SVG topology diagram
+# GET /api/topology              - View network topology
+# GET /api/routes                - View routing tables
+# GET /api/vxlan                 - View VXLAN tunnels
+# GET /api/simulate?spines=3&leaves=5 - Run a custom simulation on demand
 ```
 
 ## Testing
